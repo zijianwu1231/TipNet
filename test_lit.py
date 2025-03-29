@@ -1,7 +1,8 @@
 import os
 import torch
 from matplotlib import pyplot as plt
-from tooltip_resnet import LitTooltipNet
+# from tooltip_resnet import LitTooltipNet
+from tooltip_feat_mask import LitTooltipNet
 
 import numpy as np
 from torch.utils.data import DataLoader
@@ -26,7 +27,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # Load the dataset
 batch_size = 1
-ckpt_path = "/home/zijianwu/Codes/TipNet/logs/lightning_logs/version_61/checkpoints/epoch=79-step=93200.ckpt"
+ckpt_path = "/home/zijianwu/Codes/TipNet/logs/lightning_logs/version_88/checkpoints/best-ckpt-epoch=73-val_dist=7.82.ckpt"
 
 test_mask_path =   "/bigdata/SurgPose/tooltip/eval"
 test_kps_file =   "/bigdata/SurgPose/tooltip/keypoints_100003_left.yaml"

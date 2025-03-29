@@ -90,7 +90,7 @@ class SpatialSoftArgmax(nn.Module):
             )
         )
 
-    def forward(self, x):
+    def forward(self, x, part_mask=None):
         assert x.ndim == 4, "Expecting a tensor of shape (B, C, H, W)."
 
         # compute a spatial softmax over the input:
@@ -99,6 +99,15 @@ class SpatialSoftArgmax(nn.Module):
         # the softmax operator over the last dimension
         b, c, h, w = x.shape
         softmax = F.softmax(x.view(-1, h * w), dim=-1)
+
+        # apply part_mask to the softmax
+        if part_mask is not None:
+            part_mask = part_mask.view(-1, h * w)
+            # concatenate 2 part_mask to match the softmax shape
+            part_mask = torch.cat([part_mask, part_mask], dim=0)
+            softmax = softmax * part_mask
+
+            # argmax along the h*w dimension and get the idx
 
         # create a meshgrid of pixel coordinates
         # both in the x and y axes
@@ -168,8 +177,10 @@ class TooltipNet(nn.Module):
         heatmap = self.read_out(resnet_out, feat) # (B, k, H//2, W//2)
 
         # apply part_mask to the heatmap
-        heatmap = heatmap * part_mask
 
+        # breakpoint()
+        # keypoints = self.spatialsoftargmax(heatmap, part_mask)
+        heatmap = heatmap * part_mask
         keypoints = self.spatialsoftargmax(heatmap)
 
         # mapping back to original resolution from [-1,1]
@@ -211,7 +222,7 @@ class LitTooltipNet(pl.LightningModule):
         return loss_val
 
     def configure_optimizers(self):
-        optimizer = torch.optim.Adam(self.parameters(), lr=1e-4)
+        optimizer = torch.optim.Adam(self.parameters(), lr=5e-5)
         lr_scheduler = torch.optim.lr_scheduler.CosineAnnealingLR(optimizer, T_max=10)
         return [optimizer], [lr_scheduler]
 
