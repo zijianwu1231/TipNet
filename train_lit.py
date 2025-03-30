@@ -47,20 +47,16 @@ elif data_type == "sim2real":
     val_dataloader = torch.utils.data.DataLoader(val_data, batch_size=batch_size, shuffle=False, num_workers=NUM_WORKERS)
 elif data_type == "mixed":
     print("----------------Using mixed dataset----------------")
-    sim_mask_path = "/bigdata/SurgPose/tooltip/simulated_data"
-    real_mask_path = "/bigdata/SurgPose/tooltip/train"
-    val_mask_path   = "/bigdata/SurgPose/tooltip/eval"
-    sim_kps_file  = "/bigdata/SurgPose/tooltip/keypoints.json"
-    real_kps_file = "/bigdata/SurgPose/tooltip/keypoints_100002_left.yaml"
-    val_kps_file    = "/bigdata/SurgPose/tooltip/keypoints_100003_left.yaml"
+    train_mask_path = "/bigdata/SurgPose/tooltip/mixed_data"
+    val_mask_path   = "/bigdata/SurgPose/tooltip/new_eval"
+    train_kps_file  = "/bigdata/SurgPose/tooltip/keypoints_mixed.json"
+    val_kps_file    = "/bigdata/SurgPose/tooltip/new_kps_eval.json"
 
-    sim_dataset = SimTooltipDataset(sim_mask_path, sim_kps_file, mode="train")
-    real_dataset = TooltipDataset(real_mask_path, real_kps_file, mode="train")
-    train_dataset = MixedTooltipDataset(sim_dataset, real_dataset)
-    train_dataloader = torch.utils.data.DataLoader(train_dataset, batch_size=batch_size, shuffle=True, num_workers=8)
+    train_data = SimTooltipDataset(train_mask_path, train_kps_file, mode="train")
+    train_dataloader = torch.utils.data.DataLoader(train_data, batch_size=batch_size, shuffle=True, num_workers=8)
 
-    val_dataset = TooltipDataset(mask_path=val_mask_path, kps_path=val_kps_file, mode="val")
-    val_dataloader = torch.utils.data.DataLoader(val_dataset, batch_size=1, shuffle=False, num_workers=8)
+    val_data = SimTooltipDataset(val_mask_path, val_kps_file, mode="val")
+    val_dataloader = torch.utils.data.DataLoader(val_data, batch_size=1, shuffle=False, num_workers=8)
 
 # sanity check
 # dataiter = iter(train_dataloader)

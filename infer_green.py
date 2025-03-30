@@ -28,7 +28,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 # Load the dataset
 batch_size = 1
 # ckpt_path = "/home/zijianwu/Codes/TipNet/logs/lightning_logs/version_53/checkpoints/epoch=99-step=58300.ckpt"
-ckpt_path = "/home/zijianwu/Codes/TipNet/logs/lightning_logs/version_88/checkpoints/best-ckpt-epoch=73-val_dist=7.82.ckpt"
+ckpt_path = "/home/zijianwu/Codes/TipNet/logs/lightning_logs/version_105/checkpoints/best-ckpt-epoch=59-val_dist=7.44.ckpt"
 infer_mask_path =   "/bigdata/SurgPose/tooltip/l_mask"
 
 test_data = GreenScreenInferDataset(mask_path=infer_mask_path)

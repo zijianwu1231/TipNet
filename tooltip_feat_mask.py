@@ -11,6 +11,7 @@ from torchmetrics import Accuracy
 from metrics import mean_euclidean_distance
 import tensorboard
 import cv2
+from scipy.ndimage import gaussian_filter
 
 class KeypointUpSample(nn.Module):
     def __init__(self, in_channels, num_keypoints, feature_channels=256):
@@ -160,6 +161,8 @@ class TooltipNet(nn.Module):
         part_mask = img[:, 2, :, :] > 0
         part_mask = part_mask.unsqueeze(1) # (B, 1, H, W)
         part_mask = F.interpolate(part_mask.float(), size=(self.height//2, self.width//2), mode='nearest') # (B, 1, H//2, W//2)
+        # blurred_mask = gaussian_filter(part_mask.cpu().detach().numpy(), sigma=3)
+
         # mask = mask.float()
         # img = mask
         # from matplotlib import pyplot as plt

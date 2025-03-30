@@ -283,7 +283,7 @@ class TooltipTransform():
             A.HorizontalFlip(p=0.5),
             A.VerticalFlip(p=0.5),
             # A.Rotate(limit=45, p=0.5),
-            # A.Affine(scale=(0.5, 1.5), shear=15, p=0.5),
+            A.Affine(scale=(0.5, 1.0), p=0.2),
             A.Resize(512, 640), # resize to 512x640
         ], keypoint_params=A.KeypointParams(format='xy'))            
 
